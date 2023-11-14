@@ -18,20 +18,7 @@ def parse_time_str(time_str: str) -> datetime:
     return datetime_object 
 
 
-def get_temp(sun_set_data: SunriseSunsetData) -> int:
-    #_now = datetime.now()
-    _now = datetime                             (2023, 11, 14, 18, 7, 4)
-    '''
-    morning_twilight_start= datetime.datetime   (2023, 11, 14, 5, 13, 38) 
-    sunrise=datetime.       datetime            (2023, 11, 14, 5, 34, 17) 
-    morning_twilight_end=   datetime.datetime   (2023, 11, 14, 5, 54, 56) 
-
-    noon=datetime.          datetime            (2023, 11, 14, 11, 40, 23) 
-    
-    evening_twilight_start= datetime.datetime   (2023, 11, 14, 17, 25, 49) 
-    sunset=datetime.        datetime            (2023, 11, 14, 17, 46, 28) 
-    evening_twilight_end=   datetime.datetime   (2023, 11, 14, 18, 7, 7)
-    '''
+def get_temp(now: datetime, sun_set_data: SunriseSunsetData) -> int:
 
     def _now_is_night_time(now: datetime, ssd: SunriseSunsetData) -> bool:
         if now < ssd.morning_twilight_start or now > ssd.evening_twilight_end:
@@ -68,14 +55,14 @@ def get_temp(sun_set_data: SunriseSunsetData) -> int:
         return evening_temp_gradient
         
 
-    if _now_is_night_time(_now, sun_set_data):
+    if _now_is_night_time(now, sun_set_data):
         return ScreenColorTemperature.nighttime_temperature
-    elif _now_is_day_time(_now, sun_set_data):
+    elif _now_is_day_time(now, sun_set_data):
         return ScreenColorTemperature.daytime_temperature
-    elif _now_is_morning_twilight(_now, sun_set_data):
-        return _get_temp_gradient(_now, sun_set_data)
+    elif _now_is_morning_twilight(now, sun_set_data):
+        return _get_temp_gradient(now, sun_set_data)
     #Otherwise, it's the evening twilitht zone
-    return _get_temp_gradient(_now, sun_set_data)
+    return _get_temp_gradient(now, sun_set_data)
 
 
 def calculate_temperature(sunrise_sunset_json: dict) -> dict[str, int]:
@@ -90,6 +77,19 @@ def calculate_temperature(sunrise_sunset_json: dict) -> dict[str, int]:
     ssd.morning_twilight_end = ssd.sunrise + (ssd.sunrise - ssd.morning_twilight_start)
     ssd.evening_twilight_start = ssd.sunset - (ssd.evening_twilight_end - ssd.sunset)
 
-    temperature = get_temp(sun_set_data=ssd)
+    time_now = datetime.now()
+    #time_now = datetime                             (2023, 11, 14, 18, 7, 4)
+    '''
+    morning_twilight_start= datetime.datetime   (2023, 11, 14, 5, 13, 38) 
+    sunrise=datetime.       datetime            (2023, 11, 14, 5, 34, 17) 
+    morning_twilight_end=   datetime.datetime   (2023, 11, 14, 5, 54, 56) 
+
+    noon=datetime.          datetime            (2023, 11, 14, 11, 40, 23) 
+    
+    evening_twilight_start= datetime.datetime   (2023, 11, 14, 17, 25, 49) 
+    sunset=datetime.        datetime            (2023, 11, 14, 17, 46, 28) 
+    evening_twilight_end=   datetime.datetime   (2023, 11, 14, 18, 7, 7)
+    '''
+    temperature = get_temp(now=time_now, sun_set_data=ssd)
 
     return {'temperature': temperature}
