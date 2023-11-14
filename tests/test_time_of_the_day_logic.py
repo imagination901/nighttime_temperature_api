@@ -25,5 +25,15 @@ def test_night_get_temp():
 
 
 def test_day_get_temp():
-    night_now = datetime.datetime(2023, 11, 14, 11, 1, 1)
-    assert get_temp(now=night_now, sun_set_data=test_ssd) == 6000
+    day_now = datetime.datetime(2023, 11, 14, 11, 1, 1)
+    assert get_temp(now=day_now, sun_set_data=test_ssd) == 6000
+
+
+def test_morning_twilight_get_temp():
+    morning_twilight_now = datetime.datetime(2023, 11, 14, 5, 31, 1)
+    assert 2700 <= get_temp(now=morning_twilight_now, sun_set_data=test_ssd) <= 6000
+
+
+def test_evening_twilight_get_temp():
+    evening_twilight_now = datetime.datetime(2023, 11, 14, 17, 40, 1)
+    assert 2700 <= get_temp(now=evening_twilight_now, sun_set_data=test_ssd) <= 6000

@@ -78,18 +78,6 @@ def calculate_temperature(sunrise_sunset_json: dict) -> dict[str, int]:
     ssd.evening_twilight_start = ssd.sunset - (ssd.evening_twilight_end - ssd.sunset)
 
     time_now = datetime.now()
-    #time_now = datetime                             (2023, 11, 14, 18, 7, 4)
-    '''
-    morning_twilight_start= datetime.datetime   (2023, 11, 14, 5, 13, 38) 
-    sunrise=datetime.       datetime            (2023, 11, 14, 5, 34, 17) 
-    morning_twilight_end=   datetime.datetime   (2023, 11, 14, 5, 54, 56) 
-
-    noon=datetime.          datetime            (2023, 11, 14, 11, 40, 23) 
-    
-    evening_twilight_start= datetime.datetime   (2023, 11, 14, 17, 25, 49) 
-    sunset=datetime.        datetime            (2023, 11, 14, 17, 46, 28) 
-    evening_twilight_end=   datetime.datetime   (2023, 11, 14, 18, 7, 7)
-    '''
     temperature = get_temp(now=time_now, sun_set_data=ssd)
 
     return {'temperature': temperature}
