@@ -18,5 +18,6 @@ async def nighttime_temperature(lat: float,
                                 ):
     response = await client.get(f'https://api.sunrise-sunset.org/json?lat={lat}&lng={lng}')
     response_json = response.json()
+    api_data = response_json['results']
 
-    return calculate_temperature(response_json)
+    return calculate_temperature(api_data=api_data)

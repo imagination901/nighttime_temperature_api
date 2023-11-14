@@ -65,14 +65,13 @@ def get_temp(now: datetime, sun_set_data: SunriseSunsetData) -> int:
     return _get_temp_gradient(now, sun_set_data)
 
 
-def calculate_temperature(sunrise_sunset_json: dict) -> dict[str, int]:
-    times = sunrise_sunset_json['results']
+def calculate_temperature(api_data: dict) -> dict[str, int]:
     ssd = SunriseSunsetData(
-        sunrise=                parse_time_str(times['sunrise']),
-        sunset=                 parse_time_str(times['sunset']),
-        noon=                   parse_time_str(times['solar_noon']),
-        morning_twilight_start= parse_time_str(times['civil_twilight_begin']),
-        evening_twilight_end=   parse_time_str(times['civil_twilight_end'])
+        sunrise=                parse_time_str(api_data['sunrise']),
+        sunset=                 parse_time_str(api_data['sunset']),
+        noon=                   parse_time_str(api_data['solar_noon']),
+        morning_twilight_start= parse_time_str(api_data['civil_twilight_begin']),
+        evening_twilight_end=   parse_time_str(api_data['civil_twilight_end'])
     )
     ssd.morning_twilight_end = ssd.sunrise + (ssd.sunrise - ssd.morning_twilight_start)
     ssd.evening_twilight_start = ssd.sunset - (ssd.evening_twilight_end - ssd.sunset)
